@@ -5,4 +5,9 @@ head
 	title Document
 body
 	=hello
+
+	form(action='post', method='post')
+		input(name='username')
+		input(name='_method', type='hidden', value='delete')
+		button(type='submit') 提交
 	

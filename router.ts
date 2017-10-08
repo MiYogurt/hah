@@ -25,8 +25,14 @@ class Router {
     option = methodBuilder('option')
     delete = methodBuilder('delete')
 
-    handleParams(req, res){
-      const methods =  this.methods[(req.method as string).toLocaleLowerCase()];
+    async handleParams(req, res){
+
+      let methods =  this.methods[(req.method as string).toLocaleLowerCase()];
+
+      if ('_method' in req.text) {
+           methods =  this.methods[(req.text['_method'] as string).toLocaleLowerCase()];
+      }
+
       for(let method of methods){
         const {
             url,
@@ -39,9 +45,7 @@ class Router {
                 prev[current.name] = params[index + 1] ? params[index + 1] : undefined;
                 return prev;
             }, {});
-            (async() => {
-               await handle(req, res)
-            })()
+            await handle(req, res)
             break;
         }
       }
